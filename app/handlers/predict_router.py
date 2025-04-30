@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, Security
-from .schemas import LivenessRequest, LivenessResponse
+from .schemas import LivenessRequest, LivenessResponse, FallbackDescriptor
 from passive_liveness_api.app.utils import get_logger
 from passive_liveness_api.app.handlers.security import check_api_key
 
@@ -42,7 +42,13 @@ async def liveness_endpoint(
     dummy_result = {
         "liveness_label": "real",
         "confidence_score": 0.99,
-        "requires_active_check": False,
+        "requires_active_check": True,
     }
-    logger.info(f"/liveness response: {dummy_result}")
-    return LivenessResponse(**dummy_result)
+    fallback = None
+    if dummy_result["requires_active_check"]:
+        from passive_liveness_api.app.inference.fallback import BlinkFallbackHandler
+        fb = BlinkFallbackHandler()
+        fb_desc = fb.trigger_fallback()
+        fallback = FallbackDescriptor(**fb_desc)
+    logger.info(f"/liveness response: {dummy_result}, fallback: {fallback}")
+    return LivenessResponse(**dummy_result, fallback=fallback)

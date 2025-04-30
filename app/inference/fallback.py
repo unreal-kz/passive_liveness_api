@@ -16,9 +16,12 @@ class FallbackHandler(ABC):
         """
         pass
 
-class MockFallbackHandler(FallbackHandler):
+class BlinkFallbackHandler(FallbackHandler):
     """
-    Placeholder fallback handler that returns a static message.
+    Fallback handler that returns a blink challenge descriptor and upload URL.
     """
     def trigger_fallback(self, reason: str = "") -> Dict[str, str]:
-        return {"message": "Please blink or turn your head."}
+        return {
+            "challenge_type": "blink",
+            "upload_url": "https://example.com/upload/blink123"  # Presigned URL placeholder
+        }

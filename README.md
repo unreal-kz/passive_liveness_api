@@ -30,6 +30,14 @@
   ```
 - Now, POSTing a real face image to `/liveness` will return a true confidence score.
 
+## Active Blink Challenge Flow
+1. **Step 1:** Client POSTs a face image to `/liveness`.
+    - If passive liveness is inconclusive, the response includes a `fallback` with `challenge_type: "blink"` and an `upload_url`.
+2. **Step 2:** Client POSTs a short video (3-5s, showing a blink) to `/active/blink` (as `multipart/form-data` with `video` field).
+3. **Step 3:** Server analyzes the video and responds with `{ "active_passed": true/false }`.
+
+This two-step flow ensures robust liveness detection by combining passive and active (blink) checks.
+
 ## Run with Docker
 - Build the image:
   ```sh
