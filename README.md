@@ -28,6 +28,7 @@ Receives a base64-encoded RGB face image and determines if the face is real or s
   - `liveness_label`: "real" or "fake"
   - `confidence_score`: float (0.0–1.0)
   - `requires_active_check`: bool (True if confidence < threshold)
+  - `fallback_response`: object (present only if passive check is inconclusive; e.g., `{ "message": "Please blink or turn your head." }`)
 
 ## Extensibility
 - Add new models, evaluation strategies, or fallback mechanisms by extending respective modules.
