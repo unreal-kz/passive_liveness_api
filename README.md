@@ -35,6 +35,26 @@
   curl -X POST "http://localhost:8000/liveness" -H "Content-Type: application/json" -d '{"image":"<base64-string>"}'
   ```
 
+## Authentication
+- If `API_KEY` is set, every request must include either:
+  - `X-API-KEY` header: `-H "X-API-KEY: my-secret"`
+  - or Bearer token: `-H "Authorization: Bearer my-secret"`
+- Example:
+  ```sh
+  curl -X POST "http://localhost:8000/liveness" \
+    -H "Content-Type: application/json" \
+    -H "X-API-KEY: my-secret" \
+    -d '{"image":"<base64-string>"}'
+  ```
+- Or with bearer:
+  ```sh
+  curl -X POST "http://localhost:8000/liveness" \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer my-secret" \
+    -d '{"image":"<base64-string>"}'
+  ```
+- If the header or token is missing/invalid, the API returns 401 Unauthorized.
+
 ## Local Smoke Test
 - Confirm the scaffold works end-to-end:
   ```sh
