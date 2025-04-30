@@ -1,38 +1,53 @@
 # Passive Liveness API
 
-A modular, production-ready Python backend for passive liveness detection in mobile onboarding.
+## Project Overview
+- Python FastAPI service for passive liveness detection in onboarding workflows.
+- Modular, extensible design: model loading, inference, fallback, and HTTP layers.
+- [Architecture diagram](link-to-diagram-or-placeholder)
 
-## Purpose
-Receives a base64-encoded RGB face image and determines if the face is real or spoofed using a pretrained SilentFaceLiveness model. Supports fallback to active liveness detection if the passive check is inconclusive.
+## Quick-start
+- Clone the repo
+- Create and activate a virtualenv (Python 3.10+)
+- Install dependencies:
+  ```sh
+  pip install -r requirements.txt
+  ```
+- Start the API server:
+  ```sh
+  uvicorn passive_liveness_api.main:app --reload
+  ```
 
-## Architecture Overview
-- **API Layer (`api/`)**: FastAPI endpoints and request/response schemas.
-- **Model Loader (`models/`)**: Factory pattern for loading ONNX or PyTorch models. Model interface and adapters for extensibility.
-- **Evaluation (`evaluation/`)**: Strategy pattern for threshold-based liveness decision logic.
-- **Fallback (`fallback/`)**: Interface/Adapter for triggering active liveness checks (e.g., blink, head-turn).
-- **Configuration (`config.py`)**: Centralized, adjustable parameters (e.g., threshold).
-- **Bootstrap (`main.py`)**: Application entrypoint.
-- **Tests (`tests/`)**: Placeholder for test utilities and future coverage.
+## Local Smoke Test
+- Confirm the scaffold works end-to-end:
+  ```sh
+  python test_script.py --image samples/sample1.jpg --model-type onnx
+  ```
+- Output is a placeholder until real ML logic is added.
 
-## SOLID & Design Patterns
-- **Factory**: Model loader for ONNX/PyTorch.
-- **Strategy**: Threshold-based evaluation logic.
-- **Adapter/Interface**: Fallback mechanism for active checks.
+## API Reference
+### POST /liveness
+- Accepts: JSON with base64-encoded face image
+- Returns: JSON with liveness label, confidence, and fallback if needed
 
-## Inputs
-- `image_base64`: str (base64-encoded RGB face image)
-- `model_type`: Optional[str] = "onnx" or "pytorch"
+#### Example request
+```json
+{
+  "image": "<base64-string>"
+}
+```
 
-## Outputs
-- JSON response:
-  - `liveness_label`: "real" or "fake"
-  - `confidence_score`: float (0.0–1.0)
-  - `requires_active_check`: bool (True if confidence < threshold)
-  - `fallback_response`: object (present only if passive check is inconclusive; e.g., `{ "message": "Please blink or turn your head." }`)
+#### Example response
+```json
+{
+  "liveness_label": "real",
+  "confidence_score": 0.99,
+  "requires_active_check": false
+}
+```
 
-## Extensibility
-- Add new models, evaluation strategies, or fallback mechanisms by extending respective modules.
-
----
-
-This project is a scalable foundation for production-grade liveness detection APIs. See module docstrings for further details.
+## Roadmap / TODO
+- Implement real model loading and inference logic
+- Add image preprocessing utilities
+- Integrate active fallback checks
+- Expand unit/integration test coverage
+- Add CI/CD and deployment scripts
