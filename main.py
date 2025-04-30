@@ -35,6 +35,9 @@ app.include_router(router)
 
 from contextlib import asynccontextmanager
 from passive_liveness_api.app.utils.async_exec import shutdown_executor
+import os
+from passive_liveness_api.app.middleware.metrics_middleware import MetricsMiddleware
+from passive_liveness_api.app.middleware.tracing_middleware import TracingMiddleware
 
 @asynccontextmanager
 async def lifespan(app):
@@ -42,3 +45,26 @@ async def lifespan(app):
     shutdown_executor()
 
 app.router.lifespan_context = lifespan
+
+# --- Observability ---
+from fastapi import Request, Response
+from fastapi.responses import PlainTextResponse
+ENABLE_METRICS = os.getenv('ENABLE_METRICS', 'true').lower() == 'true'
+ENABLE_TRACING = os.getenv('ENABLE_TRACING', 'true').lower() == 'true'
+
+if ENABLE_TRACING:
+    app.add_middleware(TracingMiddleware)
+if ENABLE_METRICS:
+    app.add_middleware(MetricsMiddleware)
+    try:
+        from prometheus_fastapi_instrumentator import Instrumentator
+        Instrumentator().instrument(app).expose(app, include_in_schema=False, endpoint="/metrics")
+    except ImportError:
+        from prometheus_client import generate_latest, CONTENT_TYPE_LATEST
+        @app.get("/metrics", include_in_schema=False)
+        async def metrics():
+            return Response(generate_latest(), media_type=CONTENT_TYPE_LATEST)
+else:
+    @app.get("/metrics", include_in_schema=False)
+    async def metrics_disabled():
+        return PlainTextResponse("Metrics disabled", status_code=404)

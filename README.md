@@ -38,6 +38,39 @@
 
 This two-step flow ensures robust liveness detection by combining passive and active (blink) checks.
 
+## Observability
+
+The API includes built-in metrics and tracing for production monitoring.
+
+### Metrics
+
+- **Prometheus Endpoint**: `/metrics` exposes HTTP request counts, latencies, and inference times.
+- **Enable/Disable**: Set `ENABLE_METRICS=true|false` (default: `true`)
+- **Custom Metrics**:
+  - `liveness_requests_total`: Counter of total requests by method, endpoint, status
+  - `liveness_requests_success`: Counter of successful responses
+  - `liveness_requests_error`: Counter of error responses
+  - `liveness_request_latency_seconds`: Histogram of request latency
+  - `liveness_inference_latency_seconds`: Histogram of inference latency
+
+### Tracing
+
+- **OpenTelemetry**: Exports spans for each request and inference operation
+- **Enable/Disable**: Set `ENABLE_TRACING=true|false` (default: `true`)
+- **OTLP Endpoint**: Configure with `OTEL_EXPORTER_OTLP_ENDPOINT` (default: `http://localhost:4318`)
+
+### Prometheus Configuration
+
+Add this to your Prometheus `scrape_config`:
+
+```yaml
+scrape_configs:
+  - job_name: 'passive-liveness-api'
+    scrape_interval: 15s
+    static_configs:
+      - targets: ['your-api-host:8000']
+```
+
 ## Run with Docker
 - Build the image:
   ```sh

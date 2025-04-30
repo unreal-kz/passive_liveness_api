@@ -8,3 +8,8 @@ onnxruntime
 opencv-python-headless
 Pillow
 mediapipe
+# Observability
+prometheus-client
+prometheus-fastapi-instrumentator
+opentelemetry-sdk
+opentelemetry-exporter-otlp
