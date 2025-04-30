@@ -14,6 +14,8 @@ def get_pipeline():
     # TODO: Replace with actual pipeline instantiation
     return None
 
+from passive_liveness_api.app.utils.async_exec import run_in_thread
+
 @router.post(
     "/liveness",
     response_model=LivenessResponse,
@@ -26,17 +28,17 @@ def get_pipeline():
     """,
     tags=["Liveness"],
 )
-def liveness_endpoint(
+async def liveness_endpoint(
     request: LivenessRequest,
     pipeline=Depends(get_pipeline),
     api_key=Depends(check_api_key),
 ):
     """
     Accepts a base64 face image, calls the inference pipeline, and returns a response.
-    Currently returns a placeholder response.
+    Offloads inference to a thread-pool for async responsiveness.
     """
     logger.info("/liveness request received.")
-    # TODO: Replace with: result = pipeline.run(image)
+    # TODO: Replace with: result = await run_in_thread(pipeline.run, image)
     dummy_result = {
         "liveness_label": "real",
         "confidence_score": 0.99,

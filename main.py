@@ -32,3 +32,13 @@ logger.info("Starting Passive Liveness API service.")
 register_error_handlers(app)
 
 app.include_router(router)
+
+from contextlib import asynccontextmanager
+from passive_liveness_api.app.utils.async_exec import shutdown_executor
+
+@asynccontextmanager
+async def lifespan(app):
+    yield
+    shutdown_executor()
+
+app.router.lifespan_context = lifespan
