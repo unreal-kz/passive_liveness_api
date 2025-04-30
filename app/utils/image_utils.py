@@ -47,15 +47,29 @@ def decode_base64_to_rgb_array(image_base64: str) -> np.ndarray:
 
 def preprocess_for_model(image: np.ndarray) -> np.ndarray:
     """
-    Resize and normalize image to match SilentFace model input: 1x3x112x112 float32, 0-1 range.
+    Crop, resize, and normalize image for SilentFace model: 1x3x112x112 float32, 0-1 range.
     Args:
         image (np.ndarray): Input RGB image array (H,W,3).
     Returns:
         np.ndarray: Preprocessed image array (1,3,112,112).
     """
-    target_size = (112, 112)
     img = image
-    # Resize
+    # Try to import face_cropper and crop face
+    try:
+        from passive_liveness_api.app.utils import face_cropper
+        img = face_cropper.crop_and_align_face(img)
+    except ImportError:
+        try:
+            from ..utils import face_cropper
+            img = face_cropper.crop_and_align_face(img)
+        except Exception:
+            # Could not import face_cropper, fallback to original image
+            pass
+    except Exception:
+        # Could not crop face (e.g., no face detected), fallback to original image
+        pass
+    # Resize (should already be 112x112, but ensure)
+    target_size = (112, 112)
     try:
         import cv2
         img = cv2.resize(img, target_size, interpolation=cv2.INTER_LINEAR)

@@ -5,6 +5,15 @@
 - Modular, extensible design: model loading, inference, fallback, and HTTP layers.
 - [Architecture diagram](link-to-diagram-or-placeholder)
 
+## Prerequisites
+- Python 3.10+
+- For best face detection, install MediaPipe (CPU-only):
+  ```sh
+  pip install mediapipe
+  ```
+  - MediaPipe may require extra system wheels on some platforms; see [MediaPipe install docs](https://google.github.io/mediapipe/getting_started/install.html).
+  - If MediaPipe is not available, OpenCV Haarcascade will be used as a fallback.
+
 ## Quick-start
 - Clone the repo
 - Create and activate a virtualenv (Python 3.10+)
