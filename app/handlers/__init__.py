@@ -1,1 +1,2 @@
-"""FastAPI route handlers."""
+from .predict_router import router
+
