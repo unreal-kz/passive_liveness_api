@@ -17,6 +17,24 @@
   uvicorn passive_liveness_api.main:app --reload
   ```
 
+## Run with Docker
+- Build the image:
+  ```sh
+  docker build -t passive_liveness_api .
+  ```
+- Run the container:
+  ```sh
+  docker run -p 8000:8000 passive_liveness_api
+  ```
+- Or use docker-compose:
+  ```sh
+  docker-compose up --build
+  ```
+- Test the API:
+  ```sh
+  curl -X POST "http://localhost:8000/liveness" -H "Content-Type: application/json" -d '{"image":"<base64-string>"}'
+  ```
+
 ## Local Smoke Test
 - Confirm the scaffold works end-to-end:
   ```sh

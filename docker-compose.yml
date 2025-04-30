@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - MODEL_PATH=path/to/model.onnx
+      - CONFIDENCE_THRESHOLD=0.85
+      - ENABLE_FALLBACK=true
+    restart: unless-stopped
+    user: "1000:1000"
