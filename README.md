@@ -12,10 +12,14 @@
   ```sh
   pip install -r requirements.txt
   ```
+- **Download the SilentFaceLiveness ONNX model weights**:
+  - Get the official ONNX file from the [SilentFaceLiveness repository](https://github.com/zhangchuheng123/Silent-Face-Anti-Spoofing).
+  - Place the model at `models/silentface.onnx` **or** set the `MODEL_PATH` environment variable to the ONNX file location.
 - Start the API server:
   ```sh
   uvicorn passive_liveness_api.main:app --reload
   ```
+- Now, POSTing a real face image to `/liveness` will return a true confidence score.
 
 ## Run with Docker
 - Build the image:
