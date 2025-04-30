@@ -4,3 +4,4 @@ ruff==0.4.3
 pre-commit==3.7.0
 detect-secrets==1.4.0
 pytest
+httpx
