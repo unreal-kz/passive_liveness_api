@@ -1,0 +1,24 @@
+repos:
+  - repo: https://github.com/psf/black
+    rev: 24.4.2
+    hooks:
+      - id: black
+        language_version: python3.10
+        args: [--line-length=100]
+  - repo: https://github.com/pre-commit/mirrors-isort
+    rev: v5.13.2
+    hooks:
+      - id: isort
+        args: [--profile=black, --line-length=100]
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: v0.4.3
+    hooks:
+      - id: ruff
+        args: [--line-length=100]
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.4.0
+    hooks:
+      - id: detect-secrets
+
+exclude: |
+  ^samples/|^__pycache__/|.*\.onnx$
