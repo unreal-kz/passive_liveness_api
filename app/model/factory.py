@@ -1,6 +1,9 @@
 from .base import BaseLivenessModel
 from .onnx_model import OnnxLivenessModel
 from .pytorch_model import PytorchLivenessModel
+from passive_liveness_api.app.utils import get_logger
+
+logger = get_logger(__name__)
 
 class LivenessModelFactory:
     """
@@ -19,9 +22,13 @@ class LivenessModelFactory:
             ValueError: If model_type is not supported.
         """
         t = model_type.lower()
+        logger.info(f"Loading model type '{t}' from path '{model_path}'")
         if t == "onnx":
+            logger.info("ONNX model loaded.")
             return OnnxLivenessModel(model_path)
         elif t == "pytorch":
+            logger.info("PyTorch model loaded.")
             return PytorchLivenessModel(model_path)
         else:
+            logger.error(f"Unknown model_type: {model_type}")
             raise ValueError(f"Unknown model_type: {model_type}")

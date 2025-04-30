@@ -2,6 +2,9 @@ from typing import Any, Dict, Optional
 from passive_liveness_api.app.model.base import BaseLivenessModel
 from .strategy import ThresholdStrategy
 from .fallback import FallbackHandler
+from passive_liveness_api.app.utils import get_logger
+
+logger = get_logger(__name__)
 
 class InferencePipeline:
     """
@@ -32,11 +35,18 @@ class InferencePipeline:
         Returns:
             dict: Liveness decision output, possibly with fallback_response.
         """
+        logger.info("Inference started.")
         label, confidence = self.model.predict(image)
+        logger.info(f"Model prediction: label={label}, confidence={confidence}")
         result = self.strategy.evaluate(label, confidence)
-        if result.get("requires_active_check") and self.fallback_handler:
-            fallback = self.fallback_handler.trigger_fallback(
-                reason="Passive check inconclusive"
-            )
-            result["fallback_response"] = fallback
+        logger.info(f"Strategy evaluation result: {result}")
+        if result.get("requires_active_check"):
+            logger.info("requires_active_check=True")
+            if self.fallback_handler:
+                fallback = self.fallback_handler.trigger_fallback(
+                    reason="Passive check inconclusive"
+                )
+                logger.info(f"Fallback triggered: {fallback}")
+                result["fallback_response"] = fallback
+        logger.info("Inference finished.")
         return result
