@@ -1,17 +1,17 @@
 repos:
   - repo: https://github.com/psf/black
-    rev: 24.4.2
+    rev: 23.12.1  # Using a stable version
     hooks:
       - id: black
         language_version: python3.10
         args: [--line-length=100]
-  - repo: https://github.com/pre-commit/mirrors-isort
-    rev: v5.13.2
+  - repo: https://github.com/pycqa/isort
+    rev: 5.12.0  # Updated repo URL and using version without 'v' prefix
     hooks:
       - id: isort
         args: [--profile=black, --line-length=100]
-  - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: v0.4.3
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.1.11  # Updated repo URL and using stable version
     hooks:
       - id: ruff
         args: [--line-length=100]
