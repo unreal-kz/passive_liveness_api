@@ -1,7 +1,7 @@
 from fastapi import FastAPI
-from passive_liveness_api.app.handlers import router
-from passive_liveness_api.app.handlers.error_handlers import register_error_handlers
-from passive_liveness_api.app.utils import get_logger
+from app.handlers import router
+from app.handlers.error_handlers import register_error_handlers
+from app.utils import get_logger
 
 app = FastAPI(
     title="Passive Liveness API",
@@ -34,10 +34,10 @@ register_error_handlers(app)
 app.include_router(router)
 
 from contextlib import asynccontextmanager
-from passive_liveness_api.app.utils.async_exec import shutdown_executor
+from app.utils.async_exec import shutdown_executor
 import os
-from passive_liveness_api.app.middleware.metrics_middleware import MetricsMiddleware
-from passive_liveness_api.app.middleware.tracing_middleware import TracingMiddleware
+from app.middleware.metrics_middleware import MetricsMiddleware
+from app.middleware.tracing_middleware import TracingMiddleware
 
 @asynccontextmanager
 async def lifespan(app):
