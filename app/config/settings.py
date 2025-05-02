@@ -13,3 +13,9 @@ class Settings:
     ENABLE_FALLBACK: bool = os.getenv("ENABLE_FALLBACK", "true").lower() == "true"
     API_KEY: str = os.getenv("API_KEY", None)
     MAX_WORKERS: int = int(os.getenv("MAX_WORKERS", cpu_count()))
+
+@lru_cache()
+def get_settings():
+    return Settings()
+
+settings = get_settings()
