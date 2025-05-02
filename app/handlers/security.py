@@ -2,7 +2,7 @@ import os
 from fastapi import Header, HTTPException, Security, status, Request
 from fastapi.security.api_key import APIKeyHeader, APIKey
 from typing import Optional
-from passive_liveness_api.app.config import settings
+from app.config import settings
 
 API_KEY_NAME = "X-API-KEY"
 API_KEY_HEADER = APIKeyHeader(name=API_KEY_NAME, auto_error=False)

@@ -56,7 +56,7 @@ def preprocess_for_model(image: np.ndarray) -> np.ndarray:
     img = image
     # Try to import face_cropper and crop face
     try:
-        from passive_liveness_api.app.utils import face_cropper
+        from app.utils import face_cropper
         img = face_cropper.crop_and_align_face(img)
     except ImportError:
         try:

@@ -1,7 +1,7 @@
 import logging
 from fastapi import Request, FastAPI
 from fastapi.responses import JSONResponse
-from passive_liveness_api.app.utils import get_logger
+from app.utils import get_logger
 import traceback
 
 logger = get_logger(__name__)

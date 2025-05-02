@@ -9,7 +9,7 @@ except ImportError:
     def cpu_count():
         return 4
 
-from passive_liveness_api.app.config.settings import settings
+from app.config.settings import settings
 
 # ThreadPoolExecutor shared at module level
 MAX_WORKERS = int(os.getenv("MAX_WORKERS") or getattr(settings, "MAX_WORKERS", None) or cpu_count())

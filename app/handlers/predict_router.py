@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, Security
 from .schemas import LivenessRequest, LivenessResponse, FallbackDescriptor
-from passive_liveness_api.app.utils import get_logger
-from passive_liveness_api.app.handlers.security import check_api_key
+from app.utils import get_logger
+from app.handlers.security import check_api_key
 
 router = APIRouter()
 logger = get_logger(__name__)
@@ -14,7 +14,7 @@ def get_pipeline():
     # TODO: Replace with actual pipeline instantiation
     return None
 
-from passive_liveness_api.app.utils.async_exec import run_in_thread
+from app.utils.async_exec import run_in_thread
 
 @router.post(
     "/liveness",
@@ -46,7 +46,7 @@ async def liveness_endpoint(
     }
     fallback = None
     if dummy_result["requires_active_check"]:
-        from passive_liveness_api.app.inference.fallback import BlinkFallbackHandler
+        from app.inference.fallback import BlinkFallbackHandler
         fb = BlinkFallbackHandler()
         fb_desc = fb.trigger_fallback()
         fallback = FallbackDescriptor(**fb_desc)
