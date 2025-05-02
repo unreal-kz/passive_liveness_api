@@ -1,6 +1,6 @@
 from fastapi import APIRouter, UploadFile, File, Request
-from passive_liveness_api.app.active.blink_challenge import BlinkChallenge
-from passive_liveness_api.app.utils import get_logger
+from app.active.blink_challenge import BlinkChallenge
+from app.utils import get_logger
 
 router = APIRouter()
 logger = get_logger(__name__)
