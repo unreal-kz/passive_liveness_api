@@ -7,7 +7,9 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 WORKDIR /app
 RUN adduser --disabled-password --gecos '' appuser && chown appuser /app
 COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+# Update setuptools to fix CVE-2024-6345 vulnerability
+RUN pip install --no-cache-dir --upgrade setuptools>=70.0.0 && \
+    pip install --no-cache-dir -r requirements.txt
 COPY . .
 USER appuser
 EXPOSE 8000
