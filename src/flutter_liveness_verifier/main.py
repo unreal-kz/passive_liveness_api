@@ -7,7 +7,7 @@ import json
 from pydantic import BaseModel
 from src.flutter_liveness_verifier.adapters.http.middleware import HMACAuthMiddleware
 from src.flutter_liveness_verifier.adapters.http.schema import LivenessVerdictIngestRequest, LivenessVerdictIngestResponse
-from src.flutter_liveness_verifier.infra.db import save_liveness_verdict
+from src.flutter_liveness_verifier.infra.db.repository import save_liveness_verdict
 from src.flutter_liveness_verifier.adapters.kafka_producer import publish_liveness_verified
 
 # Configure logging

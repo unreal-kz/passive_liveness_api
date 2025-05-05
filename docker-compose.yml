@@ -3,7 +3,7 @@ services:
   app:
     build: .
     ports:
-      - "8000:8000"
+      - "8001:8000"
     environment:
       - DATABASE_URL=postgresql+psycopg2://postgres:postgres@db:5432/liveness_db
       - KAFKA_BROKERS=kafka:9092
